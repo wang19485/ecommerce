@@ -7,12 +7,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 //import Link from '@mui/material/Link';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
 
 
 function Copyright(props) {
@@ -31,12 +33,26 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  let navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const dataObj = {
       email: data.get('email'),
       password: data.get('password'),
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName')
+    };
+    //console.log(dataObj);
+
+    axios.post('/api/auth/register', dataObj)
+    .then(function (response) {
+      console.log(response.status);
+      navigate("/login");
+    })
+    .catch(function (error) {
+      console.log(error);
     });
   };
 

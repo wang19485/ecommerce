@@ -6,23 +6,22 @@ import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import ListHeader from "./productListHeader"
+import ListHeader from "./productListHeader";
+import axios from 'axios';
 
 export default function ProductList() {
 
   const [imgArr,setImgArr] = React.useState([]);
   //http://localhost:5000/
   React.useEffect(() => {
-    fetch("/api/trending")
-    .then(res => res.json())
-    .then(
-        (result) => {
-          setImgArr(result);
-        },
-        (error) => {
-          console.log(error);
-        }
-    )
+    axios.get('/api/trending')
+      .then(function (response) {
+        setImgArr(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+    })
+
   },[]);
 
   return (
